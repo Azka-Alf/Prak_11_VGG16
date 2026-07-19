@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klasifikasi Reptil — Identifikasi Spesimen</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500;1,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="page">
+
+        <div class="site-header">
+            <span class="eyebrow">Panduan Identifikasi Lapangan</span>
+            <h1>Kenali reptilmu.</h1>
+            <p>Unggah satu foto — ular, kadal, buaya, atau kura-kura — dan model akan mencocokkannya dengan spesies yang paling mendekati.</p>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert">
+                    {% for message in messages %}
+                        <p>⚠ {{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="tag-frame" style="width: 100%;">
+            <form action="{{ url_for('predict') }}" method="post" enctype="multipart/form-data" class="upload-form">
+                <div class="upload-box">
+                    <input type="file" name="file" id="file-input" accept=".png,.jpg,.jpeg" required>
+                    <label for="file-input" id="file-label">
+                        <span class="icon">🦎</span>
+                        <span class="primary-text">Klik untuk memilih foto</span>
+                        <span class="hint">JPG · JPEG · PNG — maks. 5MB</span>
+                    </label>
+                </div>
+
+                <span class="file-chip" id="file-chip"></span>
+
+                <div class="preview-frame" id="preview-frame">
+                    <span class="corner-label">Pratinjau</span>
+                    <img id="preview" src="" alt="Pratinjau gambar">
+                </div>
+
+                <button type="submit" class="btn-submit">Identifikasi Sekarang</button>
+            </form>
+        </div>
+
+        <div class="site-footer">
+            Model VGG16 · Transfer Learning · Input 224×224
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const preview = document.getElementById('preview');
+        const previewFrame = document.getElementById('preview-frame');
+        const fileChip = document.getElementById('file-chip');
+        const fileLabel = document.getElementById('file-label');
+
+        fileInput.addEventListener('change', function () {
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    previewFrame.classList.add('visible');
+                };
+                reader.readAsDataURL(file);
+
+                fileChip.textContent = '📎 ' + file.name;
+                fileChip.classList.add('visible');
+            }
+        });
+
+        // Drag & drop styling
+        const dropLabel = fileLabel;
+        ['dragenter', 'dragover'].forEach(evt => {
+            dropLabel.addEventListener(evt, (e) => {
+                e.preventDefault();
+                dropLabel.classList.add('dragover');
+            });
+        });
+        ['dragleave', 'drop'].forEach(evt => {
+            dropLabel.addEventListener(evt, (e) => {
+                e.preventDefault();
+                dropLabel.classList.remove('dragover');
+            });
+        });
+        dropLabel.addEventListener('drop', (e) => {
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                fileInput.dispatchEvent(new Event('change'));
+            }
+        });
+    </script>
+</body>
+</html>
