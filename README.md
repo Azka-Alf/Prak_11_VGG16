@@ -93,3 +93,4 @@ Buka browser ke: **http://127.0.0.1:5000**
 | `ModuleNotFoundError` | Belum menjalankan `pip install -r requirements.txt` |
 
 File .h5 bisa di akses melalui https://drive.google.com/drive/u/0/folders/1ddJ1giamwOXH2Pml2zBRMurW7wnAlch1
+dataset yang di gunakan di ambil dari : https://www.kaggle.com/datasets/vencerlanz09/reptiles-and-amphibians-image-dataset
