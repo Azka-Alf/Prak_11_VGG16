@@ -91,3 +91,5 @@ Buka browser ke: **http://127.0.0.1:5000**
 | Error saat load model (`.h5`) | Versi TensorFlow saat load berbeda dengan versi saat training/menyimpan model |
 | Prediksi ngaco / confidence rendah | Ukuran gambar atau fungsi preprocessing tidak sama dengan saat training |
 | `ModuleNotFoundError` | Belum menjalankan `pip install -r requirements.txt` |
+
+File .h5 bisa di akses melalui https://drive.google.com/drive/u/0/folders/1ddJ1giamwOXH2Pml2zBRMurW7wnAlch1
